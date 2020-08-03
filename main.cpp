@@ -6,6 +6,12 @@
 //DISCO-F746NG
 
 /*
+ * Variables
+ */
+uint8_t rotateValue[20];
+float rotaryValue;
+
+/*
  * Digitals
  */
 DigitalOut myled(LED1);
@@ -23,8 +29,8 @@ AnalogIn rotator(A0);
 InterruptIn myBtn(D4);
 InterruptIn touch(D5);
 
-DigitalOut buttonLedInUse = redLed; // Hvilken led der skal bruges til knappen
-DigitalOut touchLedInUse = blueLed; // Hvilken led der skal bruges til touch
+DigitalOut buttonLedInUse = redLed; // Which LED to use for the button
+DigitalOut touchLedInUse = blueLed; // Which LED to use for the touch
 
 
 void handleCallbackBtn(){
@@ -51,10 +57,13 @@ int main() {
     BSP_LCD_Clear(LCD_COLOR_GREEN);
     BSP_LCD_SetFont(&LCD_DEFAULT_FONT);
     BSP_LCD_SetBackColor(LCD_COLOR_WHITE);
-    BSP_LCD_SetTextColor(LCD_COLOR_DARKBLUE);
+    BSP_LCD_SetTextColor(LCD_COLOR_BLACK);
     BSP_LCD_DisplayStringAt(0, 1, (uint8_t *)"Loaded LCD screen", CENTER_MODE);
-
+    BSP_LCD_DisplayStringAt(0, LINE(2), (uint8_t *)"Made by Mustafa", LEFT_MODE);
     while (true) {
+        rotaryValue = rotator.read() * 100;
+        sprintf((char*)rotateValue, "Rotater value: %i", (int)rotaryValue);
+        BSP_LCD_DisplayStringAt(0, LINE(10), (uint8_t *)&rotateValue, LEFT_MODE);
         
     }
 }
